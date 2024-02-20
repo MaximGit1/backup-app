@@ -1,0 +1,462 @@
+# -*- coding: utf-8 -*-
+from PyQt5 import QtCore, QtGui, QtWidgets
+from PyQt5.QtWidgets import QFileDialog, QMessageBox
+import os, time, sqlite3, threading, multiprocessing
+from userInfoWindow import Ui_UserWindow
+
+
+class Ui_MainWindow(object):
+    def setupUi(self, MainWindow):
+        MainWindow.setObjectName("MainWindow")
+        MainWindow.resize(665, 452)
+        self.centralwidget = QtWidgets.QWidget(MainWindow)
+        self.centralwidget.setObjectName("centralwidget")
+        self.verticalLayout = QtWidgets.QVBoxLayout(self.centralwidget)
+        self.verticalLayout.setObjectName("verticalLayout")
+        self.tabWidget = QtWidgets.QTabWidget(self.centralwidget)
+        self.tabWidget.setObjectName("tabWidget")
+        self.tab = QtWidgets.QWidget()
+        self.tab.setObjectName("tab")
+        self.layoutWidget_2 = QtWidgets.QWidget(self.tab)
+        self.layoutWidget_2.setGeometry(QtCore.QRect(20, 40, 535, 71))
+        self.layoutWidget_2.setObjectName("layoutWidget_2")
+        self.verticalLayout_4 = QtWidgets.QVBoxLayout(self.layoutWidget_2)
+        self.verticalLayout_4.setContentsMargins(0, 0, 0, 0)
+        self.verticalLayout_4.setObjectName("verticalLayout_4")
+        self.formLayout_3 = QtWidgets.QFormLayout()
+        self.formLayout_3.setObjectName("formLayout_3")
+        self.tab1_name_btn = QtWidgets.QPushButton(self.layoutWidget_2)
+        self.tab1_name_btn.setObjectName("tab1_name_btn")
+        self.formLayout_3.setWidget(1, QtWidgets.QFormLayout.FieldRole, self.tab1_name_btn)
+        self.label_3 = QtWidgets.QLabel(self.layoutWidget_2)
+        self.label_3.setObjectName("label_3")
+        self.formLayout_3.setWidget(0, QtWidgets.QFormLayout.LabelRole, self.label_3)
+        self.tab1_name_textEdit = QtWidgets.QTextEdit(self.layoutWidget_2)
+        self.tab1_name_textEdit.setMinimumSize(QtCore.QSize(450, 0))
+        self.tab1_name_textEdit.setObjectName("tab1_name_textEdit")
+        self.formLayout_3.setWidget(1, QtWidgets.QFormLayout.LabelRole, self.tab1_name_textEdit)
+        self.verticalLayout_4.addLayout(self.formLayout_3)
+        self.tab6_default_name_hint_2 = QtWidgets.QLabel(self.layoutWidget_2)
+        self.tab6_default_name_hint_2.setText("")
+        self.tab6_default_name_hint_2.setObjectName("tab6_default_name_hint_2")
+        self.verticalLayout_4.addWidget(self.tab6_default_name_hint_2)
+        self.layoutWidget_3 = QtWidgets.QWidget(self.tab)
+        self.layoutWidget_3.setGeometry(QtCore.QRect(20, 120, 535, 71))
+        self.layoutWidget_3.setObjectName("layoutWidget_3")
+        self.verticalLayout_5 = QtWidgets.QVBoxLayout(self.layoutWidget_3)
+        self.verticalLayout_5.setContentsMargins(0, 0, 0, 0)
+        self.verticalLayout_5.setObjectName("verticalLayout_5")
+        self.formLayout_4 = QtWidgets.QFormLayout()
+        self.formLayout_4.setObjectName("formLayout_4")
+        self.tab1_dir_btn = QtWidgets.QPushButton(self.layoutWidget_3)
+        self.tab1_dir_btn.setObjectName("tab1_dir_btn")
+        self.formLayout_4.setWidget(1, QtWidgets.QFormLayout.FieldRole, self.tab1_dir_btn)
+        self.label_4 = QtWidgets.QLabel(self.layoutWidget_3)
+        self.label_4.setObjectName("label_4")
+        self.formLayout_4.setWidget(0, QtWidgets.QFormLayout.LabelRole, self.label_4)
+        self.tab1_dir_textEdit = QtWidgets.QTextEdit(self.layoutWidget_3)
+        self.tab1_dir_textEdit.setMinimumSize(QtCore.QSize(450, 0))
+        self.tab1_dir_textEdit.setObjectName("tab1_dir_textEdit")
+        self.formLayout_4.setWidget(1, QtWidgets.QFormLayout.LabelRole, self.tab1_dir_textEdit)
+        self.verticalLayout_5.addLayout(self.formLayout_4)
+        self.tab6_default_name_hint_3 = QtWidgets.QLabel(self.layoutWidget_3)
+        self.tab6_default_name_hint_3.setText("")
+        self.tab6_default_name_hint_3.setObjectName("tab6_default_name_hint_3")
+        self.verticalLayout_5.addWidget(self.tab6_default_name_hint_3)
+        self.tab1_run_btn = QtWidgets.QPushButton(self.tab)
+        self.tab1_run_btn.setGeometry(QtCore.QRect(30, 210, 151, 23))
+        self.tab1_run_btn.setObjectName("tab1_run_btn")
+        self.tabWidget.addTab(self.tab, "")
+        self.tab_3 = QtWidgets.QWidget()
+        self.tab_3.setObjectName("tab_3")
+        self.calendarWidget = QtWidgets.QCalendarWidget(self.tab_3)
+        self.calendarWidget.setGeometry(QtCore.QRect(10, 10, 296, 161))
+        self.calendarWidget.setObjectName("calendarWidget")
+        self.timeEdit = QtWidgets.QTimeEdit(self.tab_3)
+        self.timeEdit.setGeometry(QtCore.QRect(330, 150, 118, 22))
+        self.timeEdit.setObjectName("timeEdit")
+        self.layoutWidget_4 = QtWidgets.QWidget(self.tab_3)
+        self.layoutWidget_4.setGeometry(QtCore.QRect(10, 260, 535, 71))
+        self.layoutWidget_4.setObjectName("layoutWidget_4")
+        self.verticalLayout_6 = QtWidgets.QVBoxLayout(self.layoutWidget_4)
+        self.verticalLayout_6.setContentsMargins(0, 0, 0, 0)
+        self.verticalLayout_6.setObjectName("verticalLayout_6")
+        self.formLayout_5 = QtWidgets.QFormLayout()
+        self.formLayout_5.setObjectName("formLayout_5")
+        self.tab2_dir_btn = QtWidgets.QPushButton(self.layoutWidget_4)
+        self.tab2_dir_btn.setObjectName("tab2_dir_btn")
+        self.formLayout_5.setWidget(1, QtWidgets.QFormLayout.FieldRole, self.tab2_dir_btn)
+        self.label_5 = QtWidgets.QLabel(self.layoutWidget_4)
+        self.label_5.setObjectName("label_5")
+        self.formLayout_5.setWidget(0, QtWidgets.QFormLayout.LabelRole, self.label_5)
+        self.tab2_dir_textEdit = QtWidgets.QTextEdit(self.layoutWidget_4)
+        self.tab2_dir_textEdit.setMinimumSize(QtCore.QSize(450, 0))
+        self.tab2_dir_textEdit.setObjectName("tab2_dir_textEdit")
+        self.formLayout_5.setWidget(1, QtWidgets.QFormLayout.LabelRole, self.tab2_dir_textEdit)
+        self.verticalLayout_6.addLayout(self.formLayout_5)
+        self.tab6_default_name_hint_4 = QtWidgets.QLabel(self.layoutWidget_4)
+        self.tab6_default_name_hint_4.setText("")
+        self.tab6_default_name_hint_4.setObjectName("tab6_default_name_hint_4")
+        self.verticalLayout_6.addWidget(self.tab6_default_name_hint_4)
+        self.layoutWidget_5 = QtWidgets.QWidget(self.tab_3)
+        self.layoutWidget_5.setGeometry(QtCore.QRect(10, 180, 535, 71))
+        self.layoutWidget_5.setObjectName("layoutWidget_5")
+        self.verticalLayout_7 = QtWidgets.QVBoxLayout(self.layoutWidget_5)
+        self.verticalLayout_7.setContentsMargins(0, 0, 0, 0)
+        self.verticalLayout_7.setObjectName("verticalLayout_7")
+        self.formLayout_6 = QtWidgets.QFormLayout()
+        self.formLayout_6.setObjectName("formLayout_6")
+        self.tab2_name_btn = QtWidgets.QPushButton(self.layoutWidget_5)
+        self.tab2_name_btn.setObjectName("tab2_name_btn")
+        self.formLayout_6.setWidget(1, QtWidgets.QFormLayout.FieldRole, self.tab2_name_btn)
+        self.label_6 = QtWidgets.QLabel(self.layoutWidget_5)
+        self.label_6.setObjectName("label_6")
+        self.formLayout_6.setWidget(0, QtWidgets.QFormLayout.LabelRole, self.label_6)
+        self.tab2_name_textEdit = QtWidgets.QTextEdit(self.layoutWidget_5)
+        self.tab2_name_textEdit.setMinimumSize(QtCore.QSize(450, 0))
+        self.tab2_name_textEdit.setObjectName("tab2_name_textEdit")
+        self.formLayout_6.setWidget(1, QtWidgets.QFormLayout.LabelRole, self.tab2_name_textEdit)
+        self.verticalLayout_7.addLayout(self.formLayout_6)
+        self.tab6_default_name_hint_5 = QtWidgets.QLabel(self.layoutWidget_5)
+        self.tab6_default_name_hint_5.setText("")
+        self.tab6_default_name_hint_5.setObjectName("tab6_default_name_hint_5")
+        self.verticalLayout_7.addWidget(self.tab6_default_name_hint_5)
+        self.tab2_run_btn = QtWidgets.QPushButton(self.tab_3)
+        self.tab2_run_btn.setGeometry(QtCore.QRect(20, 350, 371, 23))
+        self.tab2_run_btn.setObjectName("tab2_run_btn")
+        self.tabWidget.addTab(self.tab_3, "")
+        self.tab_4 = QtWidgets.QWidget()
+        self.tab_4.setObjectName("tab_4")
+        self.layoutWidget_6 = QtWidgets.QWidget(self.tab_4)
+        self.layoutWidget_6.setGeometry(QtCore.QRect(10, 130, 535, 113))
+        self.layoutWidget_6.setObjectName("layoutWidget_6")
+        self.verticalLayout_8 = QtWidgets.QVBoxLayout(self.layoutWidget_6)
+        self.verticalLayout_8.setContentsMargins(0, 0, 0, 0)
+        self.verticalLayout_8.setObjectName("verticalLayout_8")
+        self.formLayout_7 = QtWidgets.QFormLayout()
+        self.formLayout_7.setObjectName("formLayout_7")
+        self.tab3_dir_btn = QtWidgets.QPushButton(self.layoutWidget_6)
+        self.tab3_dir_btn.setObjectName("tab3_dir_btn")
+        self.formLayout_7.setWidget(1, QtWidgets.QFormLayout.FieldRole, self.tab3_dir_btn)
+        self.label_7 = QtWidgets.QLabel(self.layoutWidget_6)
+        self.label_7.setObjectName("label_7")
+        self.formLayout_7.setWidget(0, QtWidgets.QFormLayout.LabelRole, self.label_7)
+        self.tab3_dir_textEdit = QtWidgets.QTextEdit(self.layoutWidget_6)
+        self.tab3_dir_textEdit.setMinimumSize(QtCore.QSize(450, 0))
+        self.tab3_dir_textEdit.setObjectName("tab3_dir_textEdit")
+        self.formLayout_7.setWidget(1, QtWidgets.QFormLayout.LabelRole, self.tab3_dir_textEdit)
+        self.verticalLayout_8.addLayout(self.formLayout_7)
+        self.tab6_default_name_hint_6 = QtWidgets.QLabel(self.layoutWidget_6)
+        self.tab6_default_name_hint_6.setText("")
+        self.tab6_default_name_hint_6.setObjectName("tab6_default_name_hint_6")
+        self.verticalLayout_8.addWidget(self.tab6_default_name_hint_6)
+        self.tab3_run_btn = QtWidgets.QPushButton(self.tab_4)
+        self.tab3_run_btn.setGeometry(QtCore.QRect(20, 240, 75, 23))
+        self.tab3_run_btn.setObjectName("tab3_run_btn")
+        self.comboBox = QtWidgets.QComboBox(self.tab_4)
+        self.comboBox.setGeometry(QtCore.QRect(20, 20, 69, 22))
+        self.comboBox.setObjectName("comboBox")
+        self.comboBox.addItem("")
+        self.comboBox.addItem("")
+        self.comboBox.addItem("")
+        self.comboBox.addItem("")
+        self.comboBox.addItem("")
+        self.tabWidget.addTab(self.tab_4, "")
+        self.tab_5 = QtWidgets.QWidget()
+        self.tab_5.setObjectName("tab_5")
+        self.tableWidget = QtWidgets.QTableWidget(self.tab_5)
+        self.tableWidget.setGeometry(QtCore.QRect(10, 10, 421, 361))
+        self.tableWidget.setObjectName("tableWidget")
+        self.tableWidget.setColumnCount(0)
+        self.tableWidget.setRowCount(0)
+        self.widget = QtWidgets.QWidget(self.tab_5)
+        self.widget.setGeometry(QtCore.QRect(450, 20, 181, 151))
+        self.widget.setObjectName("widget")
+        self.verticalLayout_9 = QtWidgets.QVBoxLayout(self.widget)
+        self.verticalLayout_9.setContentsMargins(0, 0, 0, 0)
+        self.verticalLayout_9.setObjectName("verticalLayout_9")
+        self.tab4_rename_btn = QtWidgets.QPushButton(self.widget)
+        self.tab4_rename_btn.setObjectName("tab4_rename_btn")
+        self.verticalLayout_9.addWidget(self.tab4_rename_btn)
+        self.tab4_del_btn = QtWidgets.QPushButton(self.widget)
+        self.tab4_del_btn.setObjectName("tab4_del_btn")
+        self.verticalLayout_9.addWidget(self.tab4_del_btn)
+        self.tab4_ls_btn = QtWidgets.QPushButton(self.widget)
+        self.tab4_ls_btn.setObjectName("tab4_ls_btn")
+        self.verticalLayout_9.addWidget(self.tab4_ls_btn)
+        self.tab4_recover_btn = QtWidgets.QPushButton(self.widget)
+        self.tab4_recover_btn.setObjectName("tab4_recover_btn")
+        self.verticalLayout_9.addWidget(self.tab4_recover_btn)
+        self.textEdit = QtWidgets.QTextEdit(self.widget)
+        self.textEdit.setObjectName("textEdit")
+        self.verticalLayout_9.addWidget(self.textEdit)
+        self.tabWidget.addTab(self.tab_5, "")
+        self.tab_6 = QtWidgets.QWidget()
+        self.tab_6.setObjectName("tab_6")
+        self.verticalLayout_10 = QtWidgets.QVBoxLayout(self.tab_6)
+        self.verticalLayout_10.setObjectName("verticalLayout_10")
+        self.tab5_textEdit = QtWidgets.QTextEdit(self.tab_6)
+        self.tab5_textEdit.setReadOnly(True)
+        self.tab5_textEdit.setObjectName("tab5_textEdit")
+        self.verticalLayout_10.addWidget(self.tab5_textEdit)
+        self.tab5_clear_btn = QtWidgets.QPushButton(self.tab_6)
+        self.tab5_clear_btn.setObjectName("tab5_clear_btn")
+        self.verticalLayout_10.addWidget(self.tab5_clear_btn)
+        self.tabWidget.addTab(self.tab_6, "")
+        self.tab_2 = QtWidgets.QWidget()
+        self.tab_2.setObjectName("tab_2")
+        self.layoutWidget = QtWidgets.QWidget(self.tab_2)
+        self.layoutWidget.setGeometry(QtCore.QRect(10, 20, 535, 71))
+        self.layoutWidget.setObjectName("layoutWidget")
+        self.verticalLayout_3 = QtWidgets.QVBoxLayout(self.layoutWidget)
+        self.verticalLayout_3.setContentsMargins(0, 0, 0, 0)
+        self.verticalLayout_3.setObjectName("verticalLayout_3")
+        self.formLayout_2 = QtWidgets.QFormLayout()
+        self.formLayout_2.setObjectName("formLayout_2")
+        self.tab6_default_name_btn = QtWidgets.QPushButton(self.layoutWidget)
+        self.tab6_default_name_btn.setObjectName("tab6_default_name_btn")
+        self.formLayout_2.setWidget(1, QtWidgets.QFormLayout.FieldRole, self.tab6_default_name_btn)
+        self.label_2 = QtWidgets.QLabel(self.layoutWidget)
+        self.label_2.setObjectName("label_2")
+        self.formLayout_2.setWidget(0, QtWidgets.QFormLayout.LabelRole, self.label_2)
+        self.tab6_default_name_textEdit = QtWidgets.QTextEdit(self.layoutWidget)
+        self.tab6_default_name_textEdit.setMinimumSize(QtCore.QSize(450, 0))
+        self.tab6_default_name_textEdit.setObjectName("tab6_default_name_textEdit")
+        self.formLayout_2.setWidget(1, QtWidgets.QFormLayout.LabelRole, self.tab6_default_name_textEdit)
+        self.verticalLayout_3.addLayout(self.formLayout_2)
+        self.tab6_default_name_hint = QtWidgets.QLabel(self.layoutWidget)
+        self.tab6_default_name_hint.setObjectName("tab6_default_name_hint")
+        self.verticalLayout_3.addWidget(self.tab6_default_name_hint)
+        self.pushButton = QtWidgets.QPushButton(self.tab_2)
+        self.pushButton.setGeometry(QtCore.QRect(10, 200, 151, 23))
+        self.pushButton.setObjectName("pushButton")
+        self.widget1 = QtWidgets.QWidget(self.tab_2)
+        self.widget1.setGeometry(QtCore.QRect(10, 120, 535, 71))
+        self.widget1.setObjectName("widget1")
+        self.verticalLayout_2 = QtWidgets.QVBoxLayout(self.widget1)
+        self.verticalLayout_2.setContentsMargins(0, 0, 0, 0)
+        self.verticalLayout_2.setObjectName("verticalLayout_2")
+        self.label = QtWidgets.QLabel(self.widget1)
+        self.label.setObjectName("label")
+        self.verticalLayout_2.addWidget(self.label)
+        self.formLayout = QtWidgets.QFormLayout()
+        self.formLayout.setObjectName("formLayout")
+        self.tab6_default_dir_btn = QtWidgets.QPushButton(self.widget1)
+        self.tab6_default_dir_btn.setObjectName("tab6_default_dir_btn")
+        self.formLayout.setWidget(0, QtWidgets.QFormLayout.FieldRole, self.tab6_default_dir_btn)
+        self.tab6_default_dir_textEdit = QtWidgets.QTextEdit(self.widget1)
+        self.tab6_default_dir_textEdit.setMinimumSize(QtCore.QSize(450, 0))
+        self.tab6_default_dir_textEdit.setObjectName("tab6_default_dir_textEdit")
+        self.formLayout.setWidget(0, QtWidgets.QFormLayout.LabelRole, self.tab6_default_dir_textEdit)
+        self.verticalLayout_2.addLayout(self.formLayout)
+        self.tab6_default_dir_hint = QtWidgets.QLabel(self.widget1)
+        self.tab6_default_dir_hint.setObjectName("tab6_default_dir_hint")
+        self.verticalLayout_2.addWidget(self.tab6_default_dir_hint)
+        self.tabWidget.addTab(self.tab_2, "")
+        self.verticalLayout.addWidget(self.tabWidget)
+        self.statusbar = QtWidgets.QLabel(self.centralwidget)
+        self.statusbar.setObjectName("statusbar")
+        self.verticalLayout.addWidget(self.statusbar)
+        MainWindow.setCentralWidget(self.centralwidget)
+        ########### default vars and settings
+        self.default_save_path = os.getcwd() + r'\backups'
+        self.default_name = 'backup_%d_%t'
+        self.status_m = 'Статус:'
+        self.log = ''
+        self.refresh_lines()
+        ### tab1 - triggers
+        self.tab1_run_btn.clicked.connect(lambda: threading.Thread(target=self.run_program, args=('tab1', 0)).start())
+
+        #### tab2 - triggers
+        self.tab2_run_btn.clicked.connect(self.tab2_get_date_time)
+        ## tab4 - triggers
+        self.tab4_ls_btn.clicked.connect(self.update_table)
+        self.tab4_rename_btn.clicked.connect(self.show_dialog)
+
+        ### tab5 - triggers
+        self.tab5_clear_btn.clicked.connect(lambda: self.tab5_textEdit.setText(self.log))
+        ###tab6 - triggers
+        self.tab6_default_dir_btn.clicked.connect(self.set_default_dir)
+        self.tab6_default_name_btn.clicked.connect(self.set_default_name)
+        self.pushButton.clicked.connect(self.open)
+        ###############
+        self.retranslateUi(MainWindow)
+        self.tabWidget.setCurrentIndex(0)
+        QtCore.QMetaObject.connectSlotsByName(MainWindow)
+
+    def retranslateUi(self, MainWindow):
+        _translate = QtCore.QCoreApplication.translate
+        MainWindow.setWindowTitle(_translate("MainWindow", "MainWindow"))
+        self.tab1_name_btn.setText(_translate("MainWindow", "PushButton"))
+        self.label_3.setText(_translate("MainWindow", "Выбор имени по умолчанию"))
+        self.tab1_dir_btn.setText(_translate("MainWindow", "PushButton"))
+        self.label_4.setText(_translate("MainWindow", "Выбор имени по умолчанию"))
+        self.tab1_run_btn.setText(_translate("MainWindow", "PushButton"))
+        self.tabWidget.setTabText(self.tabWidget.indexOf(self.tab), _translate("MainWindow", "Tab 1"))
+        self.tab2_dir_btn.setText(_translate("MainWindow", "PushButton"))
+        self.label_5.setText(_translate("MainWindow", "Выбор имени по умолчанию"))
+        self.tab2_name_btn.setText(_translate("MainWindow", "PushButton"))
+        self.label_6.setText(_translate("MainWindow", "Выбор имени по умолчанию"))
+        self.tab2_run_btn.setText(_translate("MainWindow", "PushButton"))
+        self.tabWidget.setTabText(self.tabWidget.indexOf(self.tab_3), _translate("MainWindow", "Page"))
+        self.tab3_dir_btn.setText(_translate("MainWindow", "PushButton"))
+        self.label_7.setText(_translate("MainWindow", "Выбор имени по умолчанию"))
+        self.tab3_run_btn.setText(_translate("MainWindow", "PushButton"))
+        self.comboBox.setItemText(0, _translate("MainWindow", "Нет"))
+        self.comboBox.setItemText(1, _translate("MainWindow", "5 минут"))
+        self.comboBox.setItemText(2, _translate("MainWindow", "1 час"))
+        self.comboBox.setItemText(3, _translate("MainWindow", "1 день"))
+        self.comboBox.setItemText(4, _translate("MainWindow", "7 дней"))
+        self.tabWidget.setTabText(self.tabWidget.indexOf(self.tab_4), _translate("MainWindow", "Page"))
+        self.tab4_rename_btn.setText(_translate("MainWindow", "rename"))
+        self.tab4_del_btn.setText(_translate("MainWindow", "del"))
+        self.tab4_ls_btn.setText(_translate("MainWindow", "ls"))
+        self.tab4_recover_btn.setText(_translate("MainWindow", "recover"))
+        self.tabWidget.setTabText(self.tabWidget.indexOf(self.tab_5), _translate("MainWindow", "Page"))
+        self.tab5_textEdit.setHtml(_translate("MainWindow",
+                                              "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">\n"
+                                              "<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css\">\n"
+                                              "p, li { white-space: pre-wrap; }\n"
+                                              "</style></head><body style=\" font-family:\'MS Shell Dlg 2\'; font-size:8.25pt; font-weight:400; font-style:normal;\">\n"
+                                              "<p style=\"-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><br /></p></body></html>"))
+        self.tab5_clear_btn.setText(_translate("MainWindow", "crear"))
+        self.tabWidget.setTabText(self.tabWidget.indexOf(self.tab_6), _translate("MainWindow", "Page"))
+        self.tab6_default_name_btn.setText(_translate("MainWindow", "PushButton"))
+        self.label_2.setText(_translate("MainWindow", "Выбор имени по умолчанию"))
+        self.tab6_default_name_hint.setText(
+            _translate("MainWindow", "%d - дата создания, %t - время создания резервной копии"))
+        self.pushButton.setText(_translate("MainWindow", "Руководство пользователя"))
+        self.label.setText(_translate("MainWindow", "Выбор директории сохранения по умолчанию"))
+        self.tab6_default_dir_btn.setText(_translate("MainWindow", "PushButton"))
+        self.tab6_default_dir_hint.setText(_translate("MainWindow", "Подсказка"))
+        self.tabWidget.setTabText(self.tabWidget.indexOf(self.tab_2), _translate("MainWindow", "Настройки"))
+        self.statusbar.setText(_translate("MainWindow", "Статус:"))
+
+    def set_default_dir(self):
+        dir_ = QFileDialog.getExistingDirectory()
+        if dir_:
+            self.default_save_path = dir_
+        else:
+            self.default_save_path = os.getcwd() + r'\backups'
+        self.tab6_default_dir_textEdit.setText(self.default_save_path)
+        self.refresh_lines()
+
+    def set_default_name(self):
+        name = self.tab6_default_name_textEdit.toPlainText()
+        if name:
+            name = name.replace(' ', '')
+        else:
+            name = 'backup_%d_%t'
+        self.default_name = name
+        self.refresh_lines()
+
+    def refresh_lines(self):
+        self.tab6_default_dir_textEdit.setText(self.default_save_path)
+        self.tab6_default_name_textEdit.setText(self.default_name)
+        self.tab1_dir_textEdit.setText(self.default_save_path)
+        self.tab2_dir_textEdit.setText(self.default_save_path)
+        self.tab3_dir_textEdit.setText(self.default_save_path)
+        self.tab5_textEdit.setText(self.log)
+
+
+    def get_time(self):
+        date_ = time.strftime('%Y-%m-%d', time.localtime())
+        time_ = time.strftime('%H-%M-%S', time.localtime())
+        return date_, time_
+
+    def get_name(self, date_, time_, tab):
+        name = {'tab1': self.tab1_name_textEdit.toPlainText(), 'tab2': self.tab2_name_textEdit.toPlainText()}[tab]
+        if name:
+            return name.replace('%d', date_).replace('%t', time_)
+        else:
+            return self.default_name.replace('%d', date_).replace('%t', time_)
+
+    def get_log(self, name, date_, time_, size_):
+        log = '#' * 35 + '\n'
+        log += f"Файл: {name}\n"
+        log += f"Время создания: {date_} {time_.replace('-', ':')}\n"
+        log += f"Размер: {str(size_)} байт\n"
+        log += '#' * 35 + '\n'
+        #self.tab5_textEdit.setText(log)
+        return log
+    def add_history(self, name, date_, time_, size_, path):
+        db = sqlite3.connect('data.db')
+        sql = db.cursor()
+        sql.execute("Create table IF NOT EXISTS history ( name Text, date Text, time Text, size Text, path Text)")
+        sql.execute(
+            f"INSERT INTO history (name, date, time, size, path) VALUES ('{name}', '{date_}', '{time_}', '{size_}', '{path}')")
+        db.commit()
+
+    def run_program(self, tab, delta: int):
+        dir_ = {'tab1': self.tab1_dir_textEdit.toPlainText(),
+                'tab2': self.tab2_dir_textEdit.toPlainText(),
+                'tab3': self.tab3_dir_textEdit.toPlainText()}[tab]
+        if tab != 'tab1':
+            time.sleep(delta)
+        time.sleep(2)
+        date_, time_ = self.get_time()
+        name = self.get_name(date_, time_, 'tab1')
+        os.system(f"cd {dir_} && echo rosa_backup > {name}.txt")
+        path = dir_ + rf'\{name}.txt'
+        size_ = os.path.getsize(path)
+        self.add_history(name, date_, time_, size_, path)
+        print('ok')
+        log = self.get_log(name, date_, time_, size_)
+        self.log = log
+        self.statusbar.setText(self.status_m + ' Копирование завершено! Можно посмотреть логи')
+
+    def update_table(self):
+        db = sqlite3.connect('data.db')
+        sql = db.cursor()
+        count = sql.execute("Select count(*) from history").fetchall()[0][0]
+        rows = sql.execute("Select * from history").fetchall()
+        self.tableWidget.setRowCount(count)
+        self.tableWidget.setColumnCount(4)
+        self.tableWidget.setHorizontalHeaderLabels(('Имя', 'Дата', 'Время', 'Размер'))
+        for i in range(count):
+            self.tableWidget.setItem(i, 0, QtWidgets.QTableWidgetItem(rows[i][0]))
+            self.tableWidget.setItem(i, 1, QtWidgets.QTableWidgetItem(rows[i][1]))
+            self.tableWidget.setItem(i, 2, QtWidgets.QTableWidgetItem(rows[i][2]))
+            self.tableWidget.setItem(i, 3, QtWidgets.QTableWidgetItem(rows[i][3]))
+        self.select_row()
+    def select_row(self):
+        db = sqlite3.connect('data.db')
+        sql = db.cursor()
+        current_name = self.textEdit.toPlainText()
+        res = sql.execute(f"SELECT * from history WHERE name = '{current_name}'").fetchall()[0][0]
+        print(res)
+        self.statusbar.setText("Статус: найдена sql запись")
+
+    def tab2_get_date_time(self):
+        date_ = self.calendarWidget.selectedDate().getDate()
+        pass
+        print(date_)
+
+    def open(self):
+        global UserWindow
+        UserWindow = QtWidgets.QMainWindow()
+        ui2 = Ui_UserWindow()
+        ui2.setupUi(UserWindow)
+        UserWindow.show()
+
+    def show_dialog(self):
+        m = QMessageBox()
+        m.setWindowTitle('хвывх')
+        m.setText('dlksldklsa')
+        m.setIcon(QMessageBox.Warning)
+        m.setStandardButtons(QMessageBox.Ok|QMessageBox.Cancel)
+        m.buttonClicked.connect(self.wow)
+        m.exec_()
+    def wow(self, btn):
+        if btn.text() == 'OK':
+            print(1)
+        else:
+            print(2)
+if __name__ == "__main__":
+    import sys
+    app = QtWidgets.QApplication(sys.argv)
+    MainWindow = QtWidgets.QMainWindow()
+    ui = Ui_MainWindow()
+    ui.setupUi(MainWindow)
+    MainWindow.show()
+    sys.exit(app.exec_())
